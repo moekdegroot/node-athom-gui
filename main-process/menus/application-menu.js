@@ -21,10 +21,7 @@ let template = [{
 }, {
   label: 'Help',
   role: 'help',
-  submenu: [
-    {
-      type: 'separator'
-    }, {
+  submenu: [{
       label: 'Athom Website',
       click: openExternalHandler('https://www.athom.com/')
     }, {
@@ -52,6 +49,8 @@ let template = [{
 function addUpdateMenuItems (items, position) {
   const version = app.getVersion()
   let updateItems = [{
+      type: 'separator'
+  },{
     label: `Version ${version}`,
     enabled: false
   }, {
