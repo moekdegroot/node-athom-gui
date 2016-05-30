@@ -11,7 +11,7 @@ const Menu 			= require('electron').Menu
 var state = 'no-update'
 
 exports.initialize = function() {
-	const platform = os.platform() + '_' + os.arch()
+	const platform = os.platform()
 	const version = app.getVersion()
 
 	autoUpdater.on('checking-for-update', function() {

@@ -23,6 +23,8 @@ let template = [{
   role: 'help',
   submenu: [
     {
+      type: 'separator'
+    }, {
       label: 'Athom Website',
       click: openExternalHandler('https://www.athom.com/')
     }, {
@@ -40,8 +42,6 @@ let template = [{
     }, {
       label: 'Athom Chat',
       click: openExternalHandler('https://slack.athom.com/')
-    }, {
-      type: 'separator'
     }, {
       label: 'Athom Status',
       click: openExternalHandler('https://status.athom.com/')

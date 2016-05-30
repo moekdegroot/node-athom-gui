@@ -95,7 +95,7 @@ function createRelease(assets) {
 			tag_name: `v${version}`,
 			target_commitish: 'master',
 			name: version,
-			body: 'An awesome new release :tada:',
+			body: '',
 			draft: true,
 			prerelease: true
 		}
