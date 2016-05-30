@@ -28,6 +28,7 @@ function getInstallerConfig() {
 		loadingGif		: path.join(rootPath, 'assets', 'img', 'loading.gif'),
 		noMsi 			: true,
 		outputDirectory	: path.join(outPath, 'windows-installer'),
+		remoteReleases  : 'https://github.com/athombv/node-athom-gui',
 		setupExe		: 'HomeySetup.exe',
 		setupIcon		: iconPath,
 		skipUpdateIcon	: true
