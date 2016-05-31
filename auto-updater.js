@@ -7,12 +7,14 @@ const ChildProcess 	= require('child_process')
 const app 			= require('electron').app
 const autoUpdater 	= require('electron').autoUpdater
 const Menu 			= require('electron').Menu
+const dialog		= require('electron').dialog
 
 var state = 'no-update'
 
 exports.initialize = function() {
 	const platform = os.platform()
 	const version = app.getVersion()
+	const iconPath = path.resolve(__dirname, 'assets', 'app-icon', 'png', '48.png')
 
 	autoUpdater.on('checking-for-update', function() {
 		state = 'checking'
@@ -27,16 +29,45 @@ exports.initialize = function() {
 	autoUpdater.on('update-downloaded', function() {
 		state = 'installed'
 		exports.updateMenu()
+		const pressedButton = dialog.showMessageBox({
+			type: 'info',
+			buttons: ['Cancel', 'Restart'],
+			defaultId: 1,
+			cancelId: 5,
+			icon: iconPath,
+			title: 'Homey Desktop updated',
+			message: 'Homey Desktop was updated.',
+			detail: 'Please restart application for the changes to take effect.'
+		})
+		if (pressedButton === 1) {
+			autoUpdater.quitAndInstall()
+		}
 	})
 
 	autoUpdater.on('update-not-available', function() {
 		state = 'no-update'
 		exports.updateMenu()
+		dialog.showMessageBox({
+			type: 'info',
+			buttons: ['OK'],
+			icon: iconPath,
+			title: 'No Update Available',
+			message: 'No update available.',
+			detail: "Version #{version} is the latest version."
+		})
 	})
 
-	autoUpdater.on('error', function() {
+	autoUpdater.on('error', function(e, message) {
 		state = 'no-update'
 		exports.updateMenu()
+		dialog.showMessageBox({
+			type: 'warning',
+			buttons: ['OK'],
+			icon: iconPath,
+			title: 'Update Error',
+			message: 'There was an error checking for updates.',
+			detail: message
+		})
 	})
 
 	autoUpdater.setFeedURL(`https://nuts.athom.com/update/${platform}/${version}`)
