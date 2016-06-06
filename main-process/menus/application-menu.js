@@ -7,6 +7,58 @@ const app = electron.app
 const name = app.getName()
 
 let template = [{
+  label: 'Edit',
+  submenu: [{
+      label: 'Undo',
+      accelerator: 'CmdOrCtrl+Z',
+      role: 'undo'
+    }, {
+      label: 'Redo',
+      accelerator: 'Shift+CmdOrCtrl+Z',
+      role: 'redo'
+    }, {
+      type: 'separator'
+    }, {
+      label: 'Cut',
+      accelerator: 'CmdOrCtrl+X',
+      role: 'cut'
+    }, {
+      label: 'Copy',
+      accelerator: 'CmdOrCtrl+C',
+      role: 'copy'
+    }, {
+      label: 'Paste',
+      accelerator: 'CmdOrCtrl+V',
+      role: 'paste'
+    }, {
+      label: 'Select All',
+      accelerator: 'CmdOrCtrl+A',
+      role: 'selectall'
+    },
+  ]
+}, {
+  label: 'View',
+  submenu: [{
+      label: 'Reload',
+      accelerator: 'CmdOrCtrl+R',
+      click (item, focusedWindow) {
+        if (focusedWindow) {
+          focusedWindow.reload()
+        }
+      }
+    }, {
+      label: 'Toggle Full Screen',
+      accelerator: (() => {
+        return process.platform === 'darwin' ? 'Ctrl+Command+F' : 'F11'
+      })(),
+      click (item, focusedWindow) {
+        if (focusedWindow) {
+          focusedWindow.setFullScreen(!focusedWindow.isFullScreen())
+        }
+      }
+    }
+  ]
+}, {
   label: 'Window',
   role: 'window',
   submenu: [{
@@ -112,7 +164,7 @@ if (process.platform === 'darwin') {
     }]
   })
   // Window menu.
-  template[1].submenu.push({
+  template[3].submenu.push({
     type: 'separator'
   }, {
     label: 'Bring All to Front',
