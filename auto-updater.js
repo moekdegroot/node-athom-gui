@@ -53,7 +53,7 @@ exports.initialize = function() {
 			icon: iconPath,
 			title: 'No Update Available',
 			message: 'No update available.',
-			detail: "Version #{version} is the latest version."
+			detail: `Version ${version} is the latest version.`
 		})
 	})
 
