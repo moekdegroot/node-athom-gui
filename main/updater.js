@@ -14,7 +14,7 @@ let state = 'no-update';
 function initialize() {
 	const platform = os.platform();
 	const version = app.getVersion();
-	var iconPath = path.resolve(__dirname, 'assets', 'app-icon', 'png', '48.png');
+	const iconPath = path.resolve(__dirname, '../assets', 'app-icon', 'png', '48.png');
 
 	autoUpdater.on('checking-for-update', () => {
 		state = 'checking';

@@ -4,7 +4,7 @@
 require('./main');
 
 const electron = require('electron');
-const autoUpdater = require('./main/updater.js');
+const autoUpdater = require('./main/updater');
 const windows = require('./main/windows');
 
 const app = electron.app;
@@ -25,13 +25,9 @@ function initialize() {
 		return;
 	}
 
-	console.log(autoUpdater);
-	console.log(mainWindow);
 	autoUpdater.updateMenu();
 
 	app.on('ready', () => {
-		console.log(autoUpdater);
-		console.log(mainWindow);
 		mainWindow.initialize();
 		autoUpdater.initialize();
 	});
