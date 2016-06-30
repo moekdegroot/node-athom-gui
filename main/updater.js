@@ -166,9 +166,3 @@ module.exports = {
 	updateMenu,
 	createShortcut,
 };
-
-/*
- - [ ] Create a more effective flow for packaging and releasing new versions.
- - [ ] Resolve any issues left with windows updates.
- - [ ] Add support for badge notifications.
- */
