@@ -6,9 +6,14 @@ const electron = require('electron');
 const app = electron.app;
 
 let updateWindowTitleTimeout;
-const main = module.exports;
+const main = {
+	initialize,
+	setTitle,
+	show,
+	window: null,
+};
 
-function init() {
+function initialize() {
 	if (main.window) {
 		return main.window.show();
 	}
@@ -81,9 +86,4 @@ function show() {
 	main.win.show();
 }
 
-module.exports = {
-	init,
-	setTitle,
-	show,
-	window: null,
-};
+module.exports = main;

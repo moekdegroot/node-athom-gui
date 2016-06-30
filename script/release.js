@@ -122,7 +122,7 @@ function uploadAsset(release, asset) {
 	const options = {
 		uri: release.upload_url.replace(/\{.*$/, `?name=${asset.name}`),
 		headers: {
-			'Authorization': `token ${token}`,
+			Authorization: `token ${token}`,
 			'Content-Length': fs.statSync(asset.path).size,
 			'User-Agent': `node/${process.versions.node}`,
 		},

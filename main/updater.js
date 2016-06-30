@@ -14,21 +14,21 @@ let state = 'no-update';
 function initialize() {
 	const platform = os.platform();
 	const version = app.getVersion();
-	const iconPath = path.resolve(__dirname, 'assets', 'app-icon', 'png', '48.png');
+	var iconPath = path.resolve(__dirname, 'assets', 'app-icon', 'png', '48.png');
 
 	autoUpdater.on('checking-for-update', () => {
 		state = 'checking';
-		exports.updateMenu();
+		updateMenu();
 	});
 
 	autoUpdater.on('update-available', () => {
 		state = 'checking';
-		exports.updateMenu();
+		updateMenu();
 	});
 
 	autoUpdater.on('update-downloaded', () => {
 		state = 'installed';
-		exports.updateMenu();
+		updateMenu();
 		const pressedButton = dialog.showMessageBox({
 			type: 'info',
 			buttons: ['Cancel', 'Restart'],
@@ -46,7 +46,7 @@ function initialize() {
 
 	autoUpdater.on('update-not-available', () => {
 		state = 'no-update';
-		exports.updateMenu();
+		updateMenu();
 		dialog.showMessageBox({
 			type: 'info',
 			buttons: ['OK'],
@@ -59,7 +59,7 @@ function initialize() {
 
 	autoUpdater.on('error', (e, message) => {
 		state = 'no-update';
-		exports.updateMenu();
+		updateMenu();
 		dialog.showMessageBox({
 			type: 'warning',
 			buttons: ['OK'],
@@ -166,3 +166,9 @@ module.exports = {
 	updateMenu,
 	createShortcut,
 };
+
+/*
+ - [ ] Create a more effective flow for packaging and releasing new versions.
+ - [ ] Resolve any issues left with windows updates.
+ - [ ] Add support for badge notifications.
+ */
