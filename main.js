@@ -1,62 +1,62 @@
-"use strict";
+'use strict';
 
 // Ensure that essential app components exist
 require('./main');
-const path = require('path');
 
 const electron = require('electron');
-const autoUpdater = require('./auto-updater');
+const autoUpdater = require('./main/auto-updater');
 const windows = require('./main/windows');
 
 const app = electron.app;
-
-var mainWindow = windows.main;
+const mainWindow = windows.main;
 
 function initialize() {
-    const shouldQuit = app.makeSingleInstance(() => {
-        if (mainWindow) {
-            if (mainWindow.isMinimized()) mainWindow.restore();
-            mainWindow.focus()
-        }
-    });
+	const shouldQuit = app.makeSingleInstance(() => {
+		if (mainWindow) {
+			if (mainWindow.isMinimized()) {
+				mainWindow.restore();
+			}
+			mainWindow.focus();
+		}
+	});
 
-    if (shouldQuit) {
-        app.quit();
-        return;
-    }
+	if (shouldQuit) {
+		app.quit();
+		return;
+	}
 
-    autoUpdater.updateMenu();
+	autoUpdater.updateMenu();
 
-    app.on('ready', () => {
-        mainWindow.init();
-        autoUpdater.initialize();
-    });
+	app.on('ready', () => {
+		mainWindow.init();
+		autoUpdater.initialize();
+	});
 
-    app.on('window-all-closed', () => {
-        if (process.platform !== 'darwin') {
-            app.quit();
-        }
-    });
+	app.on('window-all-closed', () => {
+		if (process.platform !== 'darwin') {
+			app.quit();
+		}
+	});
 
-    app.on('activate', () => {
-        if (mainWindow === null) {
-            mainWindow.init();
-        }
-    });
+	app.on('activate', () => {
+		if (mainWindow === null) {
+			mainWindow.init();
+		}
+	});
 }
 
 // Handle Squirrel on Windows startup events
 switch (process.argv[1]) {
-    case '--squirrel-install':
-    case '--squirrel-updated':
-        autoUpdater.createShortcut(() => app.quit());
-        break;
-    case '--squirrel-uninstall':
-        autoUpdater.removeShortcut(() => app.quit());
-        break;
-    case '--squirrel-obsolete':
-        app.quit();
-        break;
-    default:
-        initialize();
+	case '--squirrel-install':
+	case '--squirrel-updated':
+		autoUpdater.createShortcut(() => app.quit());
+		break;
+	case '--squirrel-uninstall':
+		autoUpdater.removeShortcut(() => app.quit());
+		break;
+	case '--squirrel-obsolete':
+		app.quit();
+		break;
+	default:
+		initialize();
 }

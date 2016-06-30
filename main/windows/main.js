@@ -1,15 +1,18 @@
-const path 				= require('path');
-const electron 			= require('electron');
+'use strict';
+
+const path = require('path');
+const electron = require('electron');
 
 const app = electron.app;
 
-var updateWindowTitleTimeout;
+let updateWindowTitleTimeout;
+const main = module.exports;
 
 function init() {
 	if (main.window) {
-	    return main.window.show();
+		return main.window.show();
 	}
-	  
+
 	const screenSize = electron.screen.getPrimaryDisplay().workAreaSize;
 	const userAgent = ['Athom', app.getVersion(), process.platform, process.arch].join('|');
 	const windowOptions = {
@@ -20,17 +23,17 @@ function init() {
 		minWidth: 680,
 		webPreferences: {
 			nodeIntegration: false,
-			partition: 'persist:homey'
-		}
+			partition: 'persist:homey',
+		},
 	};
 
 	if (process.platform === 'linux') {
 		windowOptions.icon = path.join(__dirname, '/assets/app-icon/png/512.png');
 	}
 
-	var window = new electron.BrowserWindow(windowOptions);
+	let window = new electron.BrowserWindow(windowOptions);
 	window.loadURL('https://my.athom.com', {
-		userAgent: userAgent
+		userAgent: userAgent,
 	});
 
 	// debounce the title to prevent redirect uglyness
@@ -53,7 +56,7 @@ function init() {
 	});
 
 	window.webContents
-		// on new window
+	// on new window
 		.on('new-window', (e, url, frameName) => {
 			if (frameName !== 'pair_dialog') {
 				e.preventDefault();
@@ -64,19 +67,23 @@ function init() {
 		.on('did-finish-load', () => window.show());
 }
 
-function setTitle (title) {
-  if (!main.window) return;
-  main.win.setTitle(title);
+function setTitle(title) {
+	if (!main.window) {
+		return;
+	}
+	main.win.setTitle(title);
 }
 
-function show () {
-  if (!main.window) return;
-  main.win.show();
+function show() {
+	if (!main.window) {
+		return;
+	}
+	main.win.show();
 }
 
-var main = module.exports = {
+module.exports = {
 	init,
 	setTitle,
 	show,
-	window : null
+	window: null,
 };

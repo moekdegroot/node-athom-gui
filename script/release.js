@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+'use strict';
 
 const childProcess = require('child_process');
 const fs = require('fs');
@@ -15,19 +16,19 @@ checkToken()
 	.then(uploadAssets)
 	.then(publishRelease)
 	.then(() => {
-		console.log('Done')
+		console.log('Done');
 	})
 	.catch((error) => {
 		console.error(error.message || error);
-		process.exit(1)
+		process.exit(1);
 	});
 
 function checkToken() {
 	if (!token) {
 		return Promise.reject('ATHOM_GUI_GITHUB_TOKEN environment variable not set\nSet it to a token with repo scope created from https://github.com/settings/tokens/new');
-	} else {
-		return Promise.resolve(token);
 	}
+
+	return Promise.resolve(token);
 }
 
 function zipAsset(asset) {
@@ -43,7 +44,7 @@ function zipAsset(asset) {
 		const zipCommand = `zip --recurse-paths --symlinks '${asset.name}' '${assetBase}'`;
 		const options = {
 			cwd: assetDirectory,
-			maxBuffer: Infinity
+			maxBuffer: Infinity,
 		};
 		childProcess.exec(zipCommand, options, (error) => {
 			if (error) {
@@ -52,33 +53,33 @@ function zipAsset(asset) {
 				asset.path = path.join(assetDirectory, asset.name);
 				resolve(asset);
 			}
-		})
-	})
+		});
+	});
 }
 
 function zipAssets() {
 	const outPath = path.join(__dirname, '..', 'out');
 
-	const zipAssets = [{
+	const zip = [{
 		name: 'homey-windows.zip',
-		path: path.join(outPath, 'Homey-win32-ia32')
+		path: path.join(outPath, 'Homey-win32-ia32'),
 	}];
 
-	return Promise.all(zipAssets.map(zipAsset)).then((assets) => {
-		return assets.concat([{
+	return Promise.all(zip.map(zipAsset)).then((assets) =>
+		assets.concat([{
 			name: 'RELEASES',
-			path: path.join(outPath, 'windows-installer', 'RELEASES')
+			path: path.join(outPath, 'windows-installer', 'RELEASES'),
 		}, {
 			name: 'HomeySetup.exe',
-			path: path.join(outPath, 'windows-installer', 'HomeySetup.exe')
+			path: path.join(outPath, 'windows-installer', 'HomeySetup.exe'),
 		}, {
 			name: `athom-gui-${version}-full.nupkg`,
-			path: path.join(outPath, 'windows-installer', `athom-gui-${version}-full.nupkg`)
+			path: path.join(outPath, 'windows-installer', `athom-gui-${version}-full.nupkg`),
 		}, {
 			name: `athom-gui-${version}-delta.nupkg`,
-			path: path.join(outPath, 'windows-installer', `athom-gui-${version}-delta.nupkg`)
+			path: path.join(outPath, 'windows-installer', `athom-gui-${version}-delta.nupkg`),
 		}])
-	})
+	);
 }
 
 function createRelease(assets) {
@@ -86,7 +87,7 @@ function createRelease(assets) {
 		uri: 'https://api.github.com/repos/athombv/node-athom-gui/releases',
 		headers: {
 			Authorization: `token ${token}`,
-			'User-Agent': `node/${process.versions.node}`
+			'User-Agent': `node/${process.versions.node}`,
 		},
 		json: {
 			tag_name: `v${version}`,
@@ -94,8 +95,8 @@ function createRelease(assets) {
 			name: version,
 			body: '',
 			draft: true,
-			prerelease: true
-		}
+			prerelease: true,
+		},
 	};
 
 	return new Promise((resolve, reject) => {
@@ -103,28 +104,28 @@ function createRelease(assets) {
 
 		request.post(options, (error, response, body) => {
 			if (error) {
-				return reject(Error(`Request failed: ${error.message || error}`))
+				return reject(Error(`Request failed: ${error.message || error}`));
 			}
 			if (response.statusCode !== 201) {
-				return reject(Error(`Non-201 response: ${response.statusCode}\n${util.inspect(body)}`))
+				return reject(Error(`Non-201 response: ${response.statusCode}\n${util.inspect(body)}`));
 			}
 
 			resolve({
 				assets: assets,
-				draft: body
-			})
-		})
-	})
+				draft: body,
+			});
+		});
+	});
 }
 
 function uploadAsset(release, asset) {
 	const options = {
 		uri: release.upload_url.replace(/\{.*$/, `?name=${asset.name}`),
 		headers: {
-			'Authorization'		: `token ${token}`,
-			'Content-Length'	: fs.statSync(asset.path).size,
-			'User-Agent'		: `node/${process.versions.node}`
-		}
+			'Authorization': `token ${token}`,
+			'Content-Length': fs.statSync(asset.path).size,
+			'User-Agent': `node/${process.versions.node}`,
+		},
 	};
 
 	return new Promise((resolve, reject) => {
@@ -132,22 +133,22 @@ function uploadAsset(release, asset) {
 
 		const assetRequest = request.post(options, (error, response, body) => {
 			if (error) {
-				return reject(Error(`Uploading asset failed: ${error.message || error}`))
+				return reject(Error(`Uploading asset failed: ${error.message || error}`));
 			}
 			if (response.statusCode >= 400) {
-				return reject(Error(`400+ response: ${response.statusCode}\n${util.inspect(body)}`))
+				return reject(Error(`400+ response: ${response.statusCode}\n${util.inspect(body)}`));
 			}
 
-			resolve(asset)
+			resolve(asset);
 		});
 		fs.createReadStream(asset.path).pipe(assetRequest);
-	})
+	});
 }
 
 function uploadAssets(release) {
-	return Promise.all(release.assets.map((asset) => {
-		return uploadAsset(release.draft, asset)
-	})).then(() => release);
+	return Promise.all(release.assets.map((asset) =>
+		uploadAsset(release.draft, asset)
+	)).then(() => release);
 }
 
 function publishRelease(release) {
@@ -155,11 +156,11 @@ function publishRelease(release) {
 		uri: release.draft.url,
 		headers: {
 			Authorization: `token ${token}`,
-			'User-Agent': `node/${process.versions.node}`
+			'User-Agent': `node/${process.versions.node}`,
 		},
 		json: {
-			draft: false
-		}
+			draft: false,
+		},
 	};
 
 	return new Promise((resolve, reject) => {
@@ -174,6 +175,6 @@ function publishRelease(release) {
 			}
 
 			resolve(body);
-		})
-	})
+		});
+	});
 }
