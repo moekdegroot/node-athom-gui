@@ -1,10 +1,10 @@
-'use strict'
+'use strict';
 
-const electron = require('electron')
-const Menu = electron.Menu
-const app = electron.app
+const electron = require('electron');
+const Menu = electron.Menu;
+const app = electron.app;
 
-const name = app.getName()
+const name = app.getName();
 
 let template = [{
   label: 'Edit',
@@ -43,7 +43,7 @@ let template = [{
       accelerator: 'CmdOrCtrl+R',
       click (item, focusedWindow) {
         if (focusedWindow) {
-          focusedWindow.reload()
+          focusedWindow.reload();
         }
       }
     }, {
@@ -53,7 +53,7 @@ let template = [{
       })(),
       click (item, focusedWindow) {
         if (focusedWindow) {
-          focusedWindow.setFullScreen(!focusedWindow.isFullScreen())
+          focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
         }
       }
     }
@@ -96,10 +96,10 @@ let template = [{
       click: openExternalHandler('https://status.athom.com/')
     }
   ]
-}]
+}];
 
 function addUpdateMenuItems (items, position) {
-  const version = app.getVersion()
+  const version = app.getVersion();
   let updateItems = [{
       type: 'separator'
   },{
@@ -114,16 +114,16 @@ function addUpdateMenuItems (items, position) {
     visible: false,
     key: 'checkForUpdate',
     click: function () {
-      require('electron').autoUpdater.checkForUpdates()
+      require('electron').autoUpdater.checkForUpdates();
     }
   }, {
     label: 'Restart and Install Update',
     visible: false,
     key: 'restartToUpdate',
     click: function () {
-      electron.autoUpdater.quitAndInstall()
+      electron.autoUpdater.quitAndInstall();
     }
-  }]
+  }];
 
   items.splice.apply(items, [position, 0].concat(updateItems))
 }
@@ -159,22 +159,22 @@ if (process.platform === 'darwin') {
       label: `Quit ${name}`,
       accelerator: 'Command+Q',
       click: function () {
-        app.quit()
+        app.quit();
       }
     }]
-  })
+  });
   // Window menu.
   template[3].submenu.push({
     type: 'separator'
   }, {
     label: 'Bring All to Front',
     role: 'front'
-  })
+  });
 
   addUpdateMenuItems(template[0].submenu, 1)
 } else if (process.platform === 'win32') {
-  const helpMenu = template[template.length - 1].submenu
-  addUpdateMenuItems(helpMenu, 0)
+  const helpMenu = template[template.length - 1].submenu;
+  addUpdateMenuItems(helpMenu, 0);
 }
 
 function openExternalHandler (url) {
@@ -182,6 +182,6 @@ function openExternalHandler (url) {
 }
 
 app.on('ready', function () {
-  const menu = Menu.buildFromTemplate(template)
-  Menu.setApplicationMenu(menu)
-})
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
+});

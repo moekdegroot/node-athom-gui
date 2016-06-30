@@ -1,5 +1,5 @@
 {
-    "version": "0.0.4",
+    "version": "0.0.10",
     "name": "athom-gui",
     "productName": "Homey",
     "description": "Homey Desktop Application",
@@ -17,7 +17,7 @@
         "pack-linux": "electron-packager . --asar --overwrite --platform=linux --arch=x64 --app-version=$npm_package_version --icon=assets/app-icon/png/72.png --prune=true --out=out",
         "package": "npm run pack-mac && npm run pack-win",
         "installer": "node ./script/installer.js",
-        "prepare-release": "npm run package && npm run sign-exe && npm run installer && npm run sign-installer",
+        "prepare-release": "npm run package && npm run installer",
         "release": "node ./script/release.js"
     },
     "repository": {
@@ -41,13 +41,13 @@
         "devtron": "^1.0.0",
         "electron-installer-dmg": "^0.1.1",
         "electron-packager": "^7.0.1",
-        "electron-prebuilt": "~1.0.2",
+        "electron-prebuilt": "~1.2.5",
         "electron-winstaller": "^2.2.0",
         "mocha": "^2.3.4",
         "request": "^2.70.0",
         "rimraf": "^2.5.2",
-        "signcode": "^0.4.0",
-        "spectron": "~3.0.0",
+        "signcode": "^0.5.0",
+        "spectron": "~3.2.3",
         "standard": "^7.0.1"
     },
     "private": true,
