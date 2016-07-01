@@ -63,7 +63,7 @@ function initialize() {
 	window.webContents
 	// on new window
 		.on('new-window', (e, url, frameName) => {
-			if (frameName !== 'pair_dialog') {
+			if (frameName !== 'homey_dialog') {
 				e.preventDefault();
 				electron.shell.openExternal(url);
 			}

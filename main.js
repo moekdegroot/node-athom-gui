@@ -1,13 +1,11 @@
 'use strict';
 
-// Ensure that essential app components exist
-require('./main');
-
 const electron = require('electron');
-const autoUpdater = require('./main/updater');
-const windows = require('./main/windows');
-
 const app = electron.app;
+const ipcMain = electron.ipcMain;
+const main = require('./main/');
+const autoUpdater = main.updater;
+const windows = main.window;
 const mainWindow = windows.main;
 
 function initialize() {
