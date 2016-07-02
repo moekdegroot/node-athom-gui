@@ -14,6 +14,7 @@ const main = {
 };
 
 function initialize() {
+	console.log('init :', main.window);
 	if (main.window) {
 		return main.window.show();
 	}
@@ -57,7 +58,7 @@ function initialize() {
 	});
 
 	window.on('closed', () => {
-		window = null;
+		main.window = null;
 	});
 
 	window.webContents
@@ -70,6 +71,8 @@ function initialize() {
 		})
 		// show window on load
 		.on('did-finish-load', () => window.show());
+	
+	main.window = window;
 }
 
 function setTitle(title) {

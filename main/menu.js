@@ -3,6 +3,7 @@
 const electron = require('electron');
 const Menu = electron.Menu;
 const app = electron.app;
+const updater = require('./updater');
 
 const name = app.getName();
 
@@ -101,8 +102,6 @@ const template = [{
 function addUpdateMenuItems(items, position) {
 	const version = app.getVersion();
 	const updateItems = [{
-		type: 'separator',
-	}, {
 		label: `Version ${version}`,
 		enabled: false,
 	}, {
@@ -114,7 +113,7 @@ function addUpdateMenuItems(items, position) {
 		visible: false,
 		key: 'checkForUpdate',
 		click: () => {
-			electron.autoUpdater.checkForUpdates();
+			updater.checkForUpdates();
 		},
 	}, {
 		label: 'Restart and Install Update',
@@ -123,7 +122,10 @@ function addUpdateMenuItems(items, position) {
 		click: () => {
 			electron.autoUpdater.quitAndInstall();
 		},
+	}, {
+		type: 'separator',
 	}];
+
 
 	items.splice.apply(items, [position, 0].concat(updateItems));
 }

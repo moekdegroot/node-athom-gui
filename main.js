@@ -10,11 +10,11 @@ const mainWindow = windows.main;
 
 function initialize() {
 	const shouldQuit = app.makeSingleInstance(() => {
-		if (mainWindow) {
-			if (mainWindow.isMinimized()) {
-				mainWindow.restore();
+		if (mainWindow.window) {
+			if (mainWindow.window.isMinimized()) {
+				mainWindow.window.restore();
 			}
-			mainWindow.focus();
+			mainWindow.window.focus();
 		}
 	});
 
@@ -37,8 +37,10 @@ function initialize() {
 	});
 
 	app.on('activate', () => {
-		if (mainWindow === null) {
-			mainWindow.init();
+		console.log(mainWindow);
+		console.log(mainWindow.window);
+		if (mainWindow.window === null) {
+			mainWindow.initialize();
 		}
 	});
 }
