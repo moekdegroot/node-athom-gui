@@ -61,12 +61,18 @@ function zipAssets() {
 	const outPath = path.join(__dirname, '..', 'out');
 
 	const zip = [{
+		name: 'homey-mac.zip',
+		path: path.join(outPath, 'Homey-darwin-x64', 'Homey.app')
+	}, {
 		name: 'homey-windows.zip',
 		path: path.join(outPath, 'Homey-win32-ia32'),
 	}];
 
 	return Promise.all(zip.map(zipAsset)).then((assets) =>
 		assets.concat([{
+			name: 'Homey.dmg',
+			path: path.join(outPath, 'Homey.dmg')
+		}, {
 			name: 'RELEASES',
 			path: path.join(outPath, 'windows-installer', 'RELEASES'),
 		}, {

@@ -10,6 +10,7 @@ const Menu = require('electron').Menu;
 const dialog = require('electron').dialog;
 
 let state = 'no-update';
+let updateRequest = false;
 
 function initialize() {
 	const platform = os.platform();
@@ -47,14 +48,17 @@ function initialize() {
 	autoUpdater.on('update-not-available', () => {
 		state = 'no-update';
 		updateMenu();
-		dialog.showMessageBox({
-			type: 'info',
-			buttons: ['OK'],
-			icon: iconPath,
-			title: 'No Update Available',
-			message: 'No update available.',
-			detail: `Version ${version} is the latest version.`,
-		});
+		if (updateRequest) {
+			dialog.showMessageBox({
+				type: 'info',
+				buttons: ['OK'],
+				icon: iconPath,
+				title: 'No Update Available',
+				message: 'No update available.',
+				detail: `Version ${version} is the latest version.`,
+			});
+			updateRequest = false;
+		}
 	});
 
 	autoUpdater.on('error', (e, message) => {
@@ -161,14 +165,14 @@ function spawnUpdate(args, callback) {
 	});
 }
 
+function checkForUpdates() {
+	updateRequest = true;
+	autoUpdater.checkForUpdates();
+}
+
 module.exports = {
 	initialize,
 	updateMenu,
 	createShortcut,
+	checkForUpdates,
 };
-
-/*
- - [ ] Create a more effective flow for packaging and releasing new versions.
- - [ ] Resolve any issues left with windows updates.
- - [ ] Add support for badge notifications.
- */

@@ -1,22 +1,20 @@
 'use strict';
 
-// Ensure that essential app components exist
-require('./main');
-
 const electron = require('electron');
-const autoUpdater = require('./main/updater');
-const windows = require('./main/windows');
-
 const app = electron.app;
+const ipcMain = electron.ipcMain;
+const main = require('./main/');
+const autoUpdater = main.updater;
+const windows = main.window;
 const mainWindow = windows.main;
 
 function initialize() {
 	const shouldQuit = app.makeSingleInstance(() => {
-		if (mainWindow) {
-			if (mainWindow.isMinimized()) {
-				mainWindow.restore();
+		if (mainWindow.window) {
+			if (mainWindow.window.isMinimized()) {
+				mainWindow.window.restore();
 			}
-			mainWindow.focus();
+			mainWindow.window.focus();
 		}
 	});
 
@@ -39,8 +37,10 @@ function initialize() {
 	});
 
 	app.on('activate', () => {
-		if (mainWindow === null) {
-			mainWindow.init();
+		console.log(mainWindow);
+		console.log(mainWindow.window);
+		if (mainWindow.window === null) {
+			mainWindow.initialize();
 		}
 	});
 }

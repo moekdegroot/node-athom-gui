@@ -14,6 +14,7 @@ const main = {
 };
 
 function initialize() {
+	console.log('init :', main.window);
 	if (main.window) {
 		return main.window.show();
 	}
@@ -57,19 +58,21 @@ function initialize() {
 	});
 
 	window.on('closed', () => {
-		window = null;
+		main.window = null;
 	});
 
 	window.webContents
 	// on new window
 		.on('new-window', (e, url, frameName) => {
-			if (frameName !== 'pair_dialog') {
+			if (frameName !== 'homey_dialog') {
 				e.preventDefault();
 				electron.shell.openExternal(url);
 			}
 		})
 		// show window on load
 		.on('did-finish-load', () => window.show());
+	
+	main.window = window;
 }
 
 function setTitle(title) {
