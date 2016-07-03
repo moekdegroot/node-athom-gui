@@ -64,14 +64,16 @@ function initialize() {
 	autoUpdater.on('error', (e, message) => {
 		state = 'no-update';
 		updateMenu();
-		dialog.showMessageBox({
-			type: 'warning',
-			buttons: ['OK'],
-			icon: iconPath,
-			title: 'Update Error',
-			message: 'There was an error checking for updates.',
-			detail: message,
-		});
+		if (updateRequest) {
+			dialog.showMessageBox({
+				type: 'warning',
+				buttons: ['OK'],
+				icon: iconPath,
+				title: 'Update Error',
+				message: 'There was an error checking for updates.',
+				detail: message,
+			});
+		}
 	});
 
 	autoUpdater.setFeedURL(`https://nuts.athom.com/update/${platform}/${version}`);
