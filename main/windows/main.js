@@ -14,7 +14,6 @@ const main = {
 };
 
 function initialize() {
-	console.log('init :', main.window);
 	if (main.window) {
 		return main.window.show();
 	}
