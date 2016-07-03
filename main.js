@@ -2,7 +2,6 @@
 
 const electron = require('electron');
 const app = electron.app;
-const ipcMain = electron.ipcMain;
 const main = require('./main/');
 const autoUpdater = main.updater;
 const windows = main.window;
@@ -37,8 +36,6 @@ function initialize() {
 	});
 
 	app.on('activate', () => {
-		console.log(mainWindow);
-		console.log(mainWindow.window);
 		if (mainWindow.window === null) {
 			mainWindow.initialize();
 		}

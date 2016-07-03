@@ -174,5 +174,6 @@ module.exports = {
 	initialize,
 	updateMenu,
 	createShortcut,
+	removeShortcut,
 	checkForUpdates,
 };
