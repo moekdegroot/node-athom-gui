@@ -73,6 +73,7 @@ function initialize() {
 				message: 'There was an error checking for updates.',
 				detail: message,
 			});
+			updateRequest = false;
 		}
 	});
 
