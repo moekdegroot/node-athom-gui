@@ -57,8 +57,14 @@ function initialize() {
 		e.preventDefault();
 	});
 
-	window.on('closed', () => {
-		main.window = null;
+	window.on('close', (e) => {
+		console.log(app.isQuitting);
+		if (process.platform !== 'darwin') {
+			app.quit();
+		} else if (!app.isQuitting) {
+			e.preventDefault();
+			window.hide();
+		}
 	});
 
 	window.webContents
@@ -86,7 +92,7 @@ function show() {
 	if (!main.window) {
 		return;
 	}
-	main.win.show();
+	main.window.show();
 }
 
 module.exports = main;

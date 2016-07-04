@@ -22,9 +22,14 @@ function initialize() {
 		return;
 	}
 
+	// App is ready and windows can be loaded
+	let isReady = false;
+	app.isQuitting = false;
+
 	autoUpdater.updateMenu();
 
 	app.on('ready', () => {
+		isReady = true;
 		mainWindow.initialize();
 		autoUpdater.initialize();
 	});
@@ -35,9 +40,17 @@ function initialize() {
 		}
 	});
 
+	app.on('before-quit', () => {
+		if (app.isQuitting) {
+			return;
+		}
+
+		app.isQuitting = true;
+	});
+
 	app.on('activate', () => {
-		if (mainWindow.window === null) {
-			mainWindow.initialize();
+		if (isReady) {
+			mainWindow.show();
 		}
 	});
 }
