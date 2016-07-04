@@ -8,6 +8,7 @@ const app = require('electron').app;
 const autoUpdater = require('electron').autoUpdater;
 const Menu = require('electron').Menu;
 const dialog = require('electron').dialog;
+const config = require('../config');
 
 let state = 'no-update';
 let updateRequest = false;
@@ -77,7 +78,7 @@ function initialize() {
 		}
 	});
 
-	autoUpdater.setFeedURL(`https://nuts.athom.com/update/${platform}/${version}`);
+	autoUpdater.setFeedURL(`${config.AUTO_UPDATE_URL}/${platform}/${version}`);
 
 	autoUpdater.checkForUpdates();
 }
