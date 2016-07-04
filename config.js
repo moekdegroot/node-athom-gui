@@ -20,7 +20,7 @@ module.exports = {
 	LOADING_GIF: path.join(__dirname, 'assets', 'img', 'loading.gif'),
 
 	// Wait for components to load
-	DELAYED_INIT: 3000,
+	DELAYED_INIT: 2000,
 
 	GITHUB_URL: 'https://github.com/athombv/node-athom-gui',
 	GITHUB_URL_RAW: 'https://raw.githubusercontent.com/athombv/node-athom-gui/master',

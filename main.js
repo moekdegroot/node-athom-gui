@@ -6,6 +6,7 @@ const main = require('./main/');
 const autoUpdater = main.updater;
 const windows = main.window;
 const mainWindow = windows.main;
+const config = require('./config');
 
 function initialize() {
 	const shouldQuit = app.makeSingleInstance(() => {
@@ -22,9 +23,15 @@ function initialize() {
 		return;
 	}
 
-	autoUpdater.updateMenu();
+	// App is ready and windows can be loaded
+	let isReady = false;
+	app.isQuitting = false;
+
+	// Let the updater wait to speed startup
+	setTimeout(delayedIntialization, config.DELAYED_INIT);
 
 	app.on('ready', () => {
+		isReady = true;
 		mainWindow.initialize();
 		autoUpdater.initialize();
 	});
@@ -35,11 +42,23 @@ function initialize() {
 		}
 	});
 
+	app.on('before-quit', () => {
+		if (app.isQuitting) {
+			return;
+		}
+
+		app.isQuitting = true;
+	});
+
 	app.on('activate', () => {
-		if (mainWindow.window === null) {
-			mainWindow.initialize();
+		if (isReady) {
+			mainWindow.show();
 		}
 	});
+}
+
+function delayedIntialization() {
+	autoUpdater.updateMenu();
 }
 
 // Handle Squirrel on Windows startup events
