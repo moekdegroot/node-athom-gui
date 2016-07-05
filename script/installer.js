@@ -20,16 +20,19 @@ function getInstallerConfig() {
 	const iconPath = `${config.APP_ICON}.ico`;
 	console.log('Building windows installer...');
 	return Promise.resolve({
-		exe: 'Homey.exe',
-		arch: 'ia32',
 		appDirectory: path.join(config.OUT_PATH, 'Homey-win32-ia32'),
+		authors: config.APP_TEAM,
+		description: config.APP_NAME,
+		exe: `${config.APP_NAME}.exe`,
 		iconUrl: `${config.GITHUB_URL_RAW}/assets/app-icon/${config.APP_NAME}.ico`,
 		loadingGif: config.LOADING_GIF,
 		noMsi: true,
 		outputDirectory: path.join(config.OUT_PATH, 'windows-installer'),
+		productName: config.APP_NAME,
 		remoteReleases: config.GITHUB_URL,
-		setupExe: 'HomeySetup.exe',
+		setupExe: `${config.APP_NAME}Setup-v${config.APP_VERSION}.exe`,
 		setupIcon: iconPath,
+		title: config.APP_NAME,
 		skipUpdateIcon: true,
 	});
 }
