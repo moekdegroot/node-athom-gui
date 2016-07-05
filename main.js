@@ -28,7 +28,7 @@ function initialize() {
 	app.isQuitting = false;
 
 	// Let the updater wait to speed startup
-	setTimeout(delayedIntialization, config.DELAYED_INIT);
+	setTimeout(delayedInitialization, config.DELAYED_INIT);
 
 	app.on('ready', () => {
 		isReady = true;
@@ -57,7 +57,7 @@ function initialize() {
 	});
 }
 
-function delayedIntialization() {
+function delayedInitialization() {
 	autoUpdater.updateMenu();
 }
 
