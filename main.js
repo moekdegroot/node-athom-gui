@@ -64,6 +64,9 @@ function delayedIntialization() {
 // Handle Squirrel on Windows startup events
 switch (process.argv[1]) {
 	case '--squirrel-install':
+		autoUpdater.createShortcut(setTimeout(() => {
+			app.quit();
+		}, 3000));
 	case '--squirrel-updated':
 		autoUpdater.createShortcut(() => app.quit());
 		break;
@@ -76,3 +79,4 @@ switch (process.argv[1]) {
 	default:
 		initialize();
 }
+
