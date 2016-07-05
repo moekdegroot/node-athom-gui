@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const request = require('request');
 const util = require('util');
+const config = require('../config');
 
 const token = process.env.ATHOM_GUI_GITHUB_TOKEN;
 const version = require('../package').version;
@@ -76,8 +77,8 @@ function zipAssets() {
 			name: 'RELEASES',
 			path: path.join(outPath, 'windows-installer', 'RELEASES'),
 		}, {
-			name: 'HomeySetup.exe',
-			path: path.join(outPath, 'windows-installer', 'HomeySetup.exe'),
+			name:  `${config.APP_NAME}Setup-v${config.APP_VERSION}.exe`,
+			path: path.join(outPath, 'windows-installer',  `${config.APP_NAME}Setup-v${config.APP_VERSION}.exe`),
 		}, {
 			name: `athom-gui-${version}-full.nupkg`,
 			path: path.join(outPath, 'windows-installer', `athom-gui-${version}-full.nupkg`),
