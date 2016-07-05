@@ -58,7 +58,6 @@ function initialize() {
 	});
 
 	window.on('close', (e) => {
-		console.log(app.isQuitting);
 		if (process.platform !== 'darwin') {
 			app.quit();
 		} else if (!app.isQuitting) {
