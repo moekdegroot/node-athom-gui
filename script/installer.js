@@ -5,9 +5,7 @@ const createWindowsInstaller = require('electron-winstaller').createWindowsInsta
 const createDMG = require('electron-installer-dmg');
 const path = require('path');
 const rimraf = require('rimraf');
-
-const rootPath = path.join(__dirname, '..');
-const outPath = path.join(rootPath, 'out');
+const config = require('../config');
 
 deleteOutputFolder()
 	.then(createOSXInstaller)
@@ -19,17 +17,17 @@ deleteOutputFolder()
 	});
 
 function getInstallerConfig() {
-	const iconPath = path.join(rootPath, 'assets', 'app-icon', 'win', 'app.ico');
+	const iconPath = `${config.APP_ICON}.ico`;
 	console.log('Building windows installer...');
 	return Promise.resolve({
 		exe: 'Homey.exe',
 		arch: 'ia32',
-		appDirectory: path.join(outPath, 'Homey-win32-ia32'),
-		iconUrl: `file://${iconPath}`,
-		loadingGif: path.join(rootPath, 'assets', 'img', 'loading.gif'),
+		appDirectory: path.join(config.OUT_PATH, 'Homey-win32-ia32'),
+		iconUrl: `${config.GITHUB_URL_RAW}/assets/app-icon/${config.APP_NAME}.ico`,
+		loadingGif: config.LOADING_GIF,
 		noMsi: true,
-		outputDirectory: path.join(outPath, 'windows-installer'),
-		remoteReleases: 'https://github.com/athombv/node-athom-gui',
+		outputDirectory: path.join(config.OUT_PATH, 'windows-installer'),
+		remoteReleases: config.GITHUB_URL,
 		setupExe: 'HomeySetup.exe',
 		setupIcon: iconPath,
 		skipUpdateIcon: true,
@@ -38,14 +36,14 @@ function getInstallerConfig() {
 
 function createOSXInstaller() {
 	return new Promise((resolve, reject) => {
-		const appPath = path.join(outPath, 'Homey-darwin-x64', 'Homey.app');
+		const appPath = path.join(config.OUT_PATH, 'Homey-darwin-x64', 'Homey.app');
 		const opts = {
 			appPath: appPath,
 			name: 'Homey',
-			out: outPath,
+			out: config.OUT_PATH,
 			'icon-size': 70,
-			icon: path.join(rootPath, 'assets', 'app-icon', 'mac', 'app.icns'),
-			background: path.join(rootPath, 'assets', 'img', 'background.png'),
+			icon: `${config.APP_ICON}.icns`,
+			background: config.DMG_BACKGROUND,
 			overwrite: true,
 			contents: [
 				{

@@ -2,6 +2,7 @@
 
 const path = require('path');
 const electron = require('electron');
+const config = require('../../config');
 
 const app = electron.app;
 
@@ -33,10 +34,10 @@ function initialize() {
 	};
 
 	if (process.platform === 'linux') {
-		windowOptions.icon = path.join(__dirname, '/assets/app-icon/png/512.png');
+		windowOptions.icon = path.join(config.ASSETS_PATH, '/app-icon/png/512.png');
 	}
 
-	let window = new electron.BrowserWindow(windowOptions);
+	const window = new electron.BrowserWindow(windowOptions);
 	window.loadURL('https://my.athom.com', {
 		userAgent: userAgent,
 	});
@@ -56,8 +57,14 @@ function initialize() {
 		e.preventDefault();
 	});
 
-	window.on('closed', () => {
-		main.window = null;
+	window.on('close', (e) => {
+		console.log(app.isQuitting);
+		if (process.platform !== 'darwin') {
+			app.quit();
+		} else if (!app.isQuitting) {
+			e.preventDefault();
+			window.hide();
+		}
 	});
 
 	window.webContents
@@ -70,7 +77,7 @@ function initialize() {
 		})
 		// show window on load
 		.on('did-finish-load', () => window.show());
-	
+
 	main.window = window;
 }
 
@@ -85,7 +92,7 @@ function show() {
 	if (!main.window) {
 		return;
 	}
-	main.win.show();
+	main.window.show();
 }
 
 module.exports = main;
