@@ -53,5 +53,8 @@
     "env": {
       "mocha": true
     }
+  },
+  "dependencies": {
+    "jimp": "^0.2.24"
   }
 }

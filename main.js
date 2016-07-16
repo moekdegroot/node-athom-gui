@@ -1,5 +1,8 @@
 'use strict';
 
+const path = require('path');
+const os = require('os');
+
 const electron = require('electron');
 const app = electron.app;
 const main = require('./main/');
@@ -8,7 +11,29 @@ const windows = main.window;
 const mainWindow = windows.main;
 const config = require('./config');
 
+const nativeImage = require('electron').nativeImage;
+
 function initialize() {
+	
+	// animate the dock icon
+	if( os.platform() === 'darwin' ) {
+		var nativeImages = {};
+		var steps = 50;
+		
+		// preload the images
+		for( let i = 1; i <= steps; i++ ) {
+			nativeImages[i] = nativeImage.createFromPath( path.join(__dirname, 'assets', 'app-icon', 'rainbow', i + '.png') );
+		}
+		
+		// update the dock icon
+		var current = 1;
+		setInterval(function(){
+			app.dock.setIcon( nativeImages[ current ] );
+			current = current % steps;
+			current = current + 1;
+		}, 50);
+	}
+	
 	const shouldQuit = app.makeSingleInstance(() => {
 		if (mainWindow.window) {
 			if (mainWindow.window.isMinimized()) {
